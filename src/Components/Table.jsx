@@ -1,14 +1,47 @@
 import React from 'react'
 import sampleData from '../SampleData/sample'
+import { useState } from 'react'
 
 function Table() {
+    // Populating the table with the data from the 
+    const [sample, setSample] = useState(sampleData)
 
-    // Get data from ./SampleData/sample.js
-    const sample_data = sampleData
+    const [myForm, setMyForm] = useState({
+        fullName: '',
+        age:'',
+
+    })
 
 
+    // Handle Runtime Change in the Fields
+    const handleChange = (e) => {
+        const {name, type, value} = e.target
+        setMyForm({
+          ...myForm,
+            [name]: value
+        })
+    }
+
+    // Handle Reset Filters
+    const handleReset = () => {
+
+    }
 
 
+    // Handle all Filter Submissions
+    const handleSubmit = () => {
+        console.log(myForm)
+
+        const filtered_data = sample.filter((data) =>{
+            if (data.name=== myForm.fullName && data.age== myForm.age){
+                return data
+            }
+        })
+
+        console.log(filtered_data)
+        setSample(filtered_data)
+
+    }
 
 
   return (
@@ -24,7 +57,7 @@ function Table() {
                     </tr>
                 </thead>
                 <tbody>
-                    {sample_data.map((item, index) => (
+                    {sample.map((item, index) => (
                         <tr key={index}>
                             <td>{item.id}</td>
                             <td>{item.name}</td>
@@ -35,7 +68,28 @@ function Table() {
                     ))}
                 </tbody>
             </table>
+
+
+            <br />
+            <br />
+            <h1>Filter Fields</h1>
+            <form >
+                    <input type="text" placeholder='Name' name='fullName' onChange={handleChange}/>   <br />    
+                    <input type="text" placeholder='Age' name='age' onChange={handleChange}/>
+            </form>
+
+            <br />
+            <br />
+            <button type="button" onClick={handleReset} >Reset Filters</button> <br />
+            <button type="button" onClick={handleSubmit} >Search</button> <br />
+ 
+
         </div>
+
+
+    
+
+
   )
 }
 
